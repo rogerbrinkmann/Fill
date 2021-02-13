@@ -27,7 +27,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
         if (mode == "Draw") {
             lastMousePress = e.getPoint();
         } else {
-
+            imagePanel.fill(e.getPoint());
         }
     }
 

@@ -34,6 +34,13 @@ public class ImagePanel extends JPanel {
         repaint();
     }
 
+    public void fill(Point point) {
+        int rgb = img.getRGB(point.x, point.y);
+
+        Color c = new Color(rgb);
+        System.out.println(c.getRed());
+    }
+
     @Override
     public void paintComponent(Graphics g) {
         super.paintComponent(g);
