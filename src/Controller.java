@@ -11,11 +11,17 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
     ImagePanel imagePanel;
     MenuPanel menuPanel;
     Point lastMousePress;
+    Area area;
 
     Controller(MenuPanel menuPanel, ImagePanel imagePanel) {
         this.menuPanel = menuPanel;
         this.imagePanel = imagePanel;
         this.mode = menuPanel.radioDraw.getActionCommand();
+
+        this.area = new Area(30, 20);
+        area.clearData();
+        area.drawRect(0, 0, this.area.width, this.area.height, 1);
+        this.imagePanel.setImage(area.getData());
     }
 
     @Override
@@ -25,9 +31,16 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
     @Override
     public void mousePressed(MouseEvent e) {
         if (mode == "Draw") {
-            lastMousePress = e.getPoint();
-        } else {
-            imagePanel.fill(e.getPoint());
+            Point mousePoint = e.getPoint();
+            int x = (int)(mousePoint.x * this.area.width) / imagePanel.width;
+            int y = (int)(mousePoint.y * this.area.height) / imagePanel.height;
+            System.out.println(x);
+            System.out.println(y);
+            System.out.println(mousePoint.x);
+            System.out.println(mousePoint.y);
+            area.setPoint(x, y, 1);
+            this.imagePanel.setImage(area.getData());
+            this.imagePanel.repaint();
         }
     }
 
@@ -53,11 +66,7 @@ public class Controller implements MouseListener, MouseMotionListener, ActionLis
 
     @Override
     public void mouseDragged(MouseEvent e) {
-        if (this.mode == "Draw") {
-            Point newMousePress = e.getPoint();
-            imagePanel.drawLine(lastMousePress, newMousePress);
-            this.lastMousePress = newMousePress;
-        }
+
     }
 
     @Override

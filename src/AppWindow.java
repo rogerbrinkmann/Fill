@@ -4,23 +4,26 @@ import java.awt.BorderLayout;
 @SuppressWarnings("serial")
 public class AppWindow extends JFrame {
 
+    ImagePanel imagePanel;
+    MenuPanel menuPanel;
+    Controller controller;
+
     AppWindow() {
         this.setTitle("App");
         this.setVisible(true);
         this.setLayout(new BorderLayout());
         this.setDefaultCloseOperation(EXIT_ON_CLOSE);
-        ImagePanel imagePanel = new ImagePanel();
-        MenuPanel menuPanel = new MenuPanel();
+        this.imagePanel = new ImagePanel(800, 800);
+        this.menuPanel = new MenuPanel(800, 30);
+        this.controller = new Controller(this.menuPanel, this.imagePanel);
 
-        Controller controller = new Controller(menuPanel, imagePanel);
+        this.menuPanel.radioFill.addActionListener(this.controller);
+        this.menuPanel.radioDraw.addActionListener(this.controller);
+        this.imagePanel.addMouseListener(this.controller);
+        this.imagePanel.addMouseMotionListener(this.controller);
 
-        menuPanel.radioFill.addActionListener(controller);
-        menuPanel.radioDraw.addActionListener(controller);
-        imagePanel.addMouseListener(controller);
-        imagePanel.addMouseMotionListener(controller);
-
-        this.add(imagePanel, BorderLayout.CENTER);
-        this.add(menuPanel, BorderLayout.NORTH);
+        this.add(this.imagePanel, BorderLayout.CENTER);
+        this.add(this.menuPanel, BorderLayout.NORTH);
 
         this.setResizable(false);
         this.pack();

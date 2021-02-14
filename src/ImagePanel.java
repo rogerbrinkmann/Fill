@@ -2,7 +2,6 @@ import java.awt.image.BufferedImage;
 import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.Dimension;
-import java.awt.Point;
 
 import javax.swing.JPanel;
 
@@ -10,35 +9,34 @@ import javax.swing.JPanel;
 public class ImagePanel extends JPanel {
 
     BufferedImage img;
-    static int WIDTH = 800;
-    static int HEIGHT = 800;
+    int width;
+    int height;
 
-    ImagePanel() {
-        this.setPreferredSize(new Dimension(WIDTH, HEIGHT));
-        this.img = new BufferedImage(WIDTH, HEIGHT, BufferedImage.TYPE_INT_RGB);
-        clearImage();
+    ImagePanel(int width, int height) {
+        this.width = width;
+        this.height = height;
+        this.setPreferredSize(new Dimension(this.width, this.height));
+        this.img = new BufferedImage(this.width, this.height, BufferedImage.TYPE_INT_RGB);
     }
 
-    public void clearImage() {
+    public void setImage(int[][] data) {
+        int rows = data.length;
+        int columns = data[0].length;
+        int rectWidth = this.width / columns;
+        int rectHeight = this.height / rows;
+
         Graphics g = this.img.getGraphics();
-        g.setColor(Color.WHITE);
-        g.fillRect(0, 0, WIDTH, HEIGHT);
-        g.dispose();
-    }
 
-    public void drawLine(Point start, Point end) {
-        Graphics g = this.img.getGraphics();
-        g.setColor(Color.BLACK);
-        g.drawLine(start.x, start.y, end.x, end.y);
-        g.dispose();
-        repaint();
-    }
-
-    public void fill(Point point) {
-        int rgb = img.getRGB(point.x, point.y);
-
-        Color c = new Color(rgb);
-        System.out.println(c.getRed());
+        for (int y = 0; y < data.length; y++) {
+            for (int x = 0; x < data[0].length; x++) {
+                if (data[y][x] == 0) {
+                    g.setColor(Color.WHITE);
+                } else {
+                    g.setColor(Color.BLACK);
+                }
+                g.fillRect(x * rectWidth, y * rectHeight, rectWidth, rectHeight);
+            }
+        }
     }
 
     @Override
